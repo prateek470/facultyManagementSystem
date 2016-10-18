@@ -1,0 +1,90 @@
+<style type="text/css">
+.entireTable{
+	width: 80%;
+	position: absolute;
+	right:5%;
+	
+    
+}
+.table  {border-collapse:collapse;border-spacing:0;table-layout: fixed;}
+.table td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.table th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.table .badhead{background-color:#009901;color:#ffffff;vertical-align:top;}
+.table .okhead{background-color:#eabf35;color:#ffffff;vertical-align:top;}
+.table .goodhead{background-color:#fe0000;color:#ffffff;vertical-align:top}
+.table .assigned{background-color:#000000;color:#ffffff;vertical-align:top}
+.table .GoodColumn{vertical-align:top}
+.table .BadColumn{vertical-align:top}
+.table .assignedCol{vertical-align:top}
+.linkout{vertical-align: center}
+.timeslotsummary{
+	left:15px;
+	
+}
+</style>
+
+<html>
+<head>
+	<%= javascript_include_tag "application" %>
+	<%= stylesheet_link_tag 'application' %>
+	<%= yield(:head) %>
+</head>
+<body>
+	<h2 align="center">Preference Summary</h2>
+	<table align="center">
+	    <tr>
+	        <td><%= link_to "Assign Faculty To Courses", faculty_courses_path, class: "btn btn-default btn-lg" %></td>
+	        <td> <%= link_to "Calendar", events_path, 'data-no-turbolink' => true, class: "btn btn-default btn-lg" %></td>
+	        <td> <%= link_to "Schedule Course", course_assignments_path, class: "btn btn-default btn-lg" %></td>
+
+	    </tr>
+	</table>
+	<%= form_for :class , method: :get, url: pref_summary_index_path do |f| %>
+		
+    	<div class="timeslotsummary">
+	 		<%= f.select :selected_time , options_for_select(@timeslot.collect { |timeslot| [DayCombination.where(:id=>timeslot.day_combination_id).select(:day_combination).take.day_combination.to_s + " " + timeslot.time_slot , timeslot.id] },
+		    	session[:selected_time] ), {prompt: "Select Time", hide_label: :true }, 
+		    	{id: 'time_slot_id' , class: "btn btn-default dropdown-toggle", :selected => @selected_time} %>
+		    	<%= f.submit "GO", class: "btn btn-primary" %> 
+		</div>
+
+		<div class = "entireTable", style = "display: inline-block">
+		<h4 align="center"> <%=@selected_time%></h4>
+		<table class="table">
+		  <tr>
+		    <th class="badhead">Preferred</th>
+		    <th class = "okhead">Available</th>
+		    <th class="goodhead">Unavailable</th>
+		    <th class = "assigned">Already Assigned</th>
+		  </tr>
+		  <tr>
+		    <td class="GoodColumn">
+		    	<%for person in @goodtimes%>
+		    		<p><%=person.faculty_name%></p>
+		    	<%end%>
+		    </td>
+		    <td class="okCol">
+		    	<%for person in @oktimes%>
+		    		<p><%=person.faculty_name%></p>
+		    	<%end%>
+		    </td>
+		    <td class="BadColumn">
+		    	<%for person in @badtimes%>
+		    		<p><%=person.faculty_name%></p>
+		    	<%end%>
+		    </td>
+		    <td class="asignedCol">
+		    	<%for person in @assigned%>
+		    		<p><%=person.faculty_name%></p>
+		    	<%end%>
+		    </td>
+		  </tr>
+		</table>
+		</div>
+		<br />
+		
+	<%end%>			
+
+
+	</body>
+</html>

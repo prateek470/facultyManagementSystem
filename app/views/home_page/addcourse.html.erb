@@ -1,0 +1,45 @@
+<div class="center jumbotron">
+  <h2>Add New Course</h2>
+  <br><br>
+ 
+
+  <%= form_for :class , method: :get, url: addcourse_path do |f| %>
+  <table style="margin-left:auto; margin-right:auto">
+    <tr>
+      <td>
+        <%= f.label "Course Name" %>
+      </td>
+      <td>
+         <%= f.text_field :CourseName %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+         <%= f.label "Course Title" %>
+      </td>
+      
+      <td>
+         <%= f.text_field :CourseTitle %> 
+      </td>
+    </tr>
+    
+    
+    <tr>
+      <td>
+        <%= f.label "Course Size" %>
+      </td>
+      
+      <td>
+        <%= f.number_field :course_size, in: 0..500, step: 1, min:0%>
+      </td>
+    </tr>
+    
+  </table>
+  
+  <p>
+    <%= f.submit "Submit", class: "btn btn-lg btn-primary" %>
+  </p>
+  
+  <%= link_to "Back", root_path %>
+ <% end %>
+</div>

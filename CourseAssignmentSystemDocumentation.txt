@@ -1,0 +1,151 @@
+﻿Course Assignment System 
+Documentation
+Features
+Step 1: Signup/Login an Account
+Admin Password: SaaSquatch431!
+Signup or Login with email and password, user will be directed to either Admin Homepage (admin is defaulted to be Professor John Keyser) or Professor Homepage.
+
+
+ New Page.png 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Step 2: Admin Homepage
+
+
+
+
+ SaaSquatches - New Page 2.png 
+
+
+
+The functionality of Admin Home page can be divided into four sections:
+
+
+Section 1. Edit Faculty
+1. Add New Faculty
+        Admin can add new faculty with the faculty name and Permission level (Admin/User)
+1. Edit Faculty Preference
+        Admin can edit all faculty time preference here. 
+1. choose the name of faculty. 
+2. Then check the preferred, acceptable or unacceptable time slot for that faculty. There exists a limit of maximum 9 for the preferred and unacceptable time slots.        
+3. Press the Submit button
+1. Reset Faculty Account
+Admin can reset faculty account with the faculty name.
+
+
+Section 2. Edit Courses & Classroom
+1. Add New Course
+        Admin can add new course with the new course name, title and course size.
+1. Add New Classroom
+        Admin can add new classroom with the building name, room number and room capacity.
+1. Add New Semester
+        Admin can add new semester with the new semester name
+
+
+Section 3. Make Assignments
+1. Room Availability
+        Admin can allocate classrooms with time slots.  
+1. Choose the classroom with the building name and room number. The assigned room capacity will show up as well. 
+2. Choose the day combo and time slots and assign that time slots to the chosen classroom. A list of assigned classroom and time slots is shown in the table.
+1. Assign Faculty to Courses
+        Admin can assign faculty to courses. 
+1. choose the faculty name and click “select” button. 
+2. Then admin can assign at most 3 courses to faculty. A list of faculty with the assigned courses is shown in the table.
+        There exists links to “Schedule Course”, “Calendar” and “Preference Summary”.
+1. Schedule Course
+        Admin can schedule course here. 
+1. Select “Schedule Course” Button
+2. Choose the faculty name. 
+3. Assigned courses for that faculty would show up. 
+4. Choose the building name, room number and the available time slot for that classroom. 
+5. A list of assigned faculty, courses and timeslots is shown in the table.
+        There exists links to “Assign Faculty to Courses”, “Calendar” and “Preference Summary”.
+
+
+Section 4. View Assignments
+1. Preference Summary
+Admin can view the time preference summary of all faculties here. The preference summary aims to assist admin in course assignment. 
+1. Choose the specific time slot, a list of faculties who is preferred, available or unavailable for this time will show up. 
+2. Check which faculty has already been assigned for this time slot. 
+
+
+        There exists links to “Assign Faculty to Courses”, “Calendar” and “Schedule Course”.
+1. Calendar
+        Admin can view the assigned courses with classroom and time in the static calendar. Also, Admin could edit the assigned time slot or classroom in the calendar.
+There exists links to “Assign Faculty to Courses”, “Preference Summary” and “Schedule Course”.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Step 3: Faculty Home Page
+ New Page 3.png 
+
+Faculty home page is for users to edit their time preferences and view assigned courses.
+
+
+Section 1. Edit Preferences
+Faculty could edit their time preferences here. They could check preferred, acceptable or unacceptable for each time slot. There exists a limit of maximum 9 for preferred and unacceptable time slots.
+
+
+Section 2. View Course Assignments
+Faculty could view their assigned courses with classroom and time slots in the static calendar.
+Faculty does not have permission to edit the calendar.
+Adding New Data to Table
+1. Find the seeds.rb file in db directory
+2. Find the seeds for the desired table
+3. Add your seeds in the same format as the seeds that already exist in the list.
+4. After saving the file, run rake db:reset and the database will be reset with the new data.
+Controllers
+Application_controller
+        The application_controller has three restful functions that are current_user, require_user, and check_permission. This controller is unseen by the user but adds security to the website by blocking CSRF attacks. This controller uses information gained from the sessions_controller and the users_controller in order to check who is logged in and whether or not they have permission to view a particular web page. This controller is used by almost every other controller in order to prevent or permit access based on the particular user.
+Class_controller
+         Legacy Code
+Course_assignments_controller
+        Legacy Code
+Events_controller
+        This controller sets up the calendar that is only viewable by Admin users (/events). The calendar contains information entered by both the various users of the Course Assignment System and the Admins who modify and edit the preferences of the various users. This controller requires that the users_controller and sessions_controller are working properly. It also requires that the TimeSlot, Room, Building, Course, CourseAssignment, and DayCombination tables in the database contain data.
+Faculty_courses_controller
+        Legacy Code
+Faculty_preferences_controller
+        Legacy Code
+Home_page_controller
+        The home page controller handles all of the functions that the administrator can do in the application. The controller handles the ability to: reset user accounts, add faculty, add a course, set the current semester, add a preference, create a semester, add a classroom, and see the calendar. The home page controller is dependant on the Semester, User, Faculty, Course, Timeslot, Preference, FacultyPreference, Building, and Room models.
+Pref_summary_controller
+        This controller handles the generation of the information for the view preferences pages. It handles checking the calling context and then generates the arrays of preferences that will be displayed on the view preferences page. 
+Professor_home_controller
+        The Professor home controller handles the home page that a user without administrator privileges will see when they log in. The controller defines the functionality for the professor level edit and view assignments pages, and it relies on the session controller to determine which users should be shown this home page.
+Sessions_controller:
+        The session controller is used to login and logout any user of the application. It is composed of three restful functions; new, create, and destroy. The session logs in the user by finding him or her in the database by email, authenticating the user, linking the user to the faculty list, and finding their permission. The destroy function logs out the user and redirects to the login page. 
+Users_controller:
+        This controller adds users to the database used by the Course Assignment System though the signup page (/signup). It contains the three restful functions, new, create, and user_params. These functions require that the Faculty table and the User table in the database exist, and that the sessions_controller is working properly in order to set the current user to be whoever is signing up and logging in.

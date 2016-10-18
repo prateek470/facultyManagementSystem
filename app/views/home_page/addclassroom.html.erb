@@ -1,0 +1,28 @@
+  <div class="center jumbotron">
+    
+  
+  <h2>Add New Classrooms</h2>
+  <br>
+      <%= form_for :class , method: :get, url: addclassroom_path do |f| %>
+      <p>
+        <%= f.label "Building Name:" %>
+        <%= f.text_field :building_name %>
+      </p>
+      <p>
+        <%= f.label "Room Number:" %>
+        <%= f.text_field :room_name %>
+      </p>
+       <p>
+        <%= f.label "Room Capacity:" %>
+        <input type="text" name="class[room_capacity]" id="classroomcapacity"/>&nbsp;<span id="capacityerrmsg"></span>
+      </p>
+      <p>
+         <%= f.submit "Add New Classroom",class:"btn btn-primary" %>
+      </p>
+     
+       
+       <%= link_to "Back", root_path %>
+      <% end %>
+</div>
+
+

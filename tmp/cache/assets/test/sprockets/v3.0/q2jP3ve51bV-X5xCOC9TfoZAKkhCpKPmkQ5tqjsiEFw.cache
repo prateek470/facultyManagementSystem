@@ -1,0 +1,57 @@
+I"£(function() {
+  $(function() {
+    return $(document).on('change', '#building_select', function(evt) {
+      return $.ajax('class/update_room', {
+        type: 'GET',
+        dataType: 'script',
+        data: {
+          building_id: $("#building_select option:selected").val()
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          return console.log("AJAX Error: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+          return console.log("Dynamic country select OK!");
+        }
+      });
+    });
+  });
+
+  $(function() {
+    return $(document).on('change', '#room_select', function(evt) {
+      return $.ajax('class/update_capacity', {
+        type: 'GET',
+        dataType: 'script',
+        data: {
+          room_id: $("#room_select option:selected").val()
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          return console.log("AJAX Error: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+          return console.log("Dynamic country select OK!");
+        }
+      });
+    });
+  });
+
+  $(function() {
+    return $(document).on('change', '#day_combination_select', function(evt) {
+      return $.ajax('class/update_timeslot', {
+        type: 'GET',
+        dataType: 'script',
+        data: {
+          day_combination_id: $("#day_combination_select option:selected").val()
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          return console.log("AJAX Error: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+          return console.log("Dynamic country select OK!");
+        }
+      });
+    });
+  });
+
+}).call(this);
+:ET

@@ -1,0 +1,21 @@
+I"?(function() {
+  $(function() {
+    return $(document).on('change', '#building_select', function(evt) {
+      return $.ajax('update_rooms', {
+        type: 'GET',
+        dataType: 'script',
+        data: {
+          building_id: $("#building_select option:selected").val()
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          return console.log("AJAX Error: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+          return console.log("Dynamic country select OK!");
+        }
+      });
+    });
+  });
+
+}).call(this);
+:ET

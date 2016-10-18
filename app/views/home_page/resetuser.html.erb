@@ -1,0 +1,21 @@
+<div style="text-align: center;"> 
+  <h2 style="display: inline-block;">Reset Faculty Account</h2>
+  <br><br>
+
+  <%= form_for :class , method: :get, url: resetuser_path do |f| %>
+  
+    <p style="display: inline-block;"><%= f.label "Faculty to Reset: " %>
+    	<p>
+	        <%= f.select :selectedUser , options_for_select(@users.collect { |name| [name.faculty_name , name.id] },
+	    	session[:selectedUser] ), {prompt: "Select Faculty", hide_label: :true }, 
+	    	{id: 'sessionId' , class: "btn btn-default dropdown-toggle"} %>
+	    </p>
+	</p>
+    <br></br>
+    <p>
+    	<%= f.submit "Reset Account", data: { confirm: 'Are you sure?' }, class: "btn btn-lg btn-primary" %>
+    </p>
+    	<%= link_to "Back", root_path%>
+    <%end%>	
+</div>
+    	

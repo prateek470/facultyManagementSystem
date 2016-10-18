@@ -1,0 +1,105 @@
+<div style="text-align: center;"> 
+  <h2 style="display: inline-block;">Edit Faculty Preferences </h2>
+  <table align="center">
+	    <tr>
+	        <td> <%= link_to "Preference Summary", pref_summary_index_path, class: "btn btn-default btn-lg" %></td>
+	    </tr>
+	</table>
+<br></br>
+ 
+<%= form_for :class , method: :get, url: addpreference_path, :html => { :id => "addpreference" } do |f| %>
+
+<p>
+	<%= f.select :FacultyName , options_for_select(@faculty.collect { |name| [name.faculty_name , name.id] },
+		session[:FacultyName] ), {prompt: "Select Faculty", hide_label: :true }, 
+		{id: 'sessionId' , class: "btn btn-default dropdown-toggle"} %>
+</p>
+<br />
+
+<table align="center">
+  <thead>
+    <tr>
+      <th>Teaching Time Slots</th>
+      <th>Preferred</th>
+      <th>Acceptable</th>
+	  <th>Unacceptable</th>
+    </tr>
+  </thead>
+  
+  		
+  
+  <tbody>
+	<% for slot in @timeslot %>
+		<tr>
+			<td><%= DayCombination.where(:id=>slot.day_combination).select(:day_combination).take.day_combination.to_s + ' ' + slot.time_slot %></td>
+			<td><%= check_box_tag 'preferred_ids[]', slot.id %></td>
+			<td>
+				<%if !@defaultBad.include?(slot)%>
+					<%= check_box_tag 'acceptable_ids[]', slot.id, checked="checked" %>
+					
+				<%else%>
+					<%= check_box_tag 'acceptable_ids[]', slot.id %>
+				<%end%>
+			</td>
+			<td>
+				<%if !@defaultBad.include?(slot)%>
+					<%= check_box_tag 'unacceptable_ids[]', slot.id %>
+					
+				<%else%>
+					<%= check_box_tag 'unacceptable_ids[]', slot.id, checked="checked" %>
+				<%end%>
+				
+			</td>
+		</tr>
+    <% end %>
+  </tbody>
+</table>
+<br></br>
+<%= f.submit "Submit", class: "btn btn-primary" %>
+<% end %>
+<%= link_to "Back", root_path%>
+
+
+<script>
+
+$("tr").on("change", ":checkbox", function(){
+   if( $(this).is(":checked") ) {
+       $(this).parent().parent().find(":checkbox").not($(this)).attr('checked', false);
+   }
+});
+
+$("tr input").each(function() {
+	<% if false %>
+    var id = $(this).attr("id");        
+    $(this).parent().parent().attr("data-feed-id", id);
+	<% end %>
+});
+
+checkboxlimit(document.forms.addpreference.unacceptable_ids_, 9)
+checkboxlimit(document.forms.addpreference.preferred_ids_, 9)
+
+function checkboxlimit(checkgroup, limit){
+	var checkgroup=checkgroup
+	var limit=limit
+	for (var i=0; i<checkgroup.length; i++){
+		checkgroup[i].onclick=function(){
+		var checkedcount=0
+		for (var i=0; i<checkgroup.length; i++)
+			checkedcount+=(checkgroup[i].checked)? 1 : 0
+		if (checkedcount>limit){
+			alert("You can only select a maximum of "+limit+" checkboxes")
+			this.checked=false
+			}
+		}
+	}
+}
+
+<% if false %>
+$(function() {
+    $('input[name=myCheckbox]').click(function(){
+        if($(this).parent().siblings().children("input[name=myCheckbox]:checkbox:checked").length >= 1)
+            this.checked = false;
+    });
+});
+<% end %>
+</script>

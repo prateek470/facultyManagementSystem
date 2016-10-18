@@ -1,0 +1,55 @@
+<h1 align="center">Conflict Checker</h1>
+<div class="note-image">
+<p id="note">Note : The following list shows groups of courses and preference combinations as per your inputs for Day-Combo, Time-Range and/or Building:</p>
+<img class="img-responsive" src=<%= asset_path('conflict-at-work.jpg') %> alt="" height="120" width="120">
+</div>
+<div style="background:#40E0D0 !important" class="jumbotron">
+<%= form_for :conflict_checker, url: conflict_checker_index_path do |f| %>
+
+<font color="red">*</font> <%= f.label "Choose a Day combo:" %> <%= f.select :day_combinations_id , options_for_select(@dayCombos.collect { |day_combination| [day_combination.day_combination, day_combination.id] }, @day_row_id), {}, { id: 'day_combination_select' , class: "input-sm"} %>
+
+<font color="red">*</font> <%= f.label "Choose a Time Range:" %> <%= f.select :time_ranges , options_for_select([['Early morning', 'Early morning'], ['Morning', 'Morning'], ['Mid-Day / Lunch', 'Mid-Day / Lunch'], ['Post-Lunch', 'Post-Lunch'], ['Evening', 'Evening']], @time_range_selected), {}, { id: 'time_range_select' , class: "input-sm"} %>
+
+<%= f.label "Choose Building Name:" %> <i><font color="red"> (optional)</font></i> <%= f.select :buildings_id , options_for_select(@buildings.collect { |building| [building[1], building[0]] }, @building_row_id), {}, { id: 'building_select', class: "input-sm"} %>
+
+<%= f.submit "Submit" ,class: "btn btn-primary"%>
+<% end %> 
+</div>
+
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Faculty Name</th>
+      <th>Course Name</th>
+      <th>Course Title</th>
+      <th>Day-Combo</th>
+      <th>Time-Slot</th>
+      <th>Building</th>
+      <th>Note</th>
+      <th>Preference #</th>
+      <th>Assigned (as per preference)?</th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+    <% @conflicts.each do |conflict| %>
+      <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+        <td><%= conflict[0] %></td>
+        <td><%= conflict[1] %></td>
+        <td><%= conflict[2] %></td>
+        <td><%= conflict[3] %></td>
+        <td><%= conflict[4] %></td>
+        <td><%= conflict[5] %></td>
+        <td><%= conflict[6] %></td>
+        <td><%= conflict[7] %></td>
+	<td><%= conflict[8] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+ 
+<br>
+
+

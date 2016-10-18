@@ -1,0 +1,77 @@
+<html>
+<link href="../../assets/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+<head>
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag 'application' %>
+  <%= yield(:head) %>
+</head>
+        
+<pre>
+<p id="facultynote">
+Note : 
+1. Please select three different preferences. 
+2. To assist with the scheduling process, please try and choose three different timings from the ranges
+   a) 8:00 AM
+   b) Morning (9:00 - 12:00)
+   c) Afternoon (12:30 - 4:30)
+   d) Evening (4:30 - 6:30)
+3. You are more than welcome to teach after 5:30 PM.Please mention that in the note.
+4. If you have a very specific preference due to particular circumstances, please indicate the same in the note.
+</p>
+</pre>
+ <div class="jumbotron"> 
+<%= form_for @faculty_preference, url: {action: "create"} do |f| %>
+	
+	<% #f.collection_select(:faculty_course_id, @faculty_courses, :id, :faculty_id, class: "input-sm") %>
+	<%= f.hidden_field :faculty_course_id, value: params[:faculty_course_id] %> 
+
+	<h2 align = "center"><%= @faculty.faculty_name %></h2>
+	<br>
+	
+	<p><%= f.label "Preference #1" %></p>
+	<%= f.fields_for :preference1 do |ff| %>
+		<%= ff.collection_select(:day_combination_id, @day_options, :id, :day_combination, {:include_blank => "Day Combination"} , {class: "day_combinations_select", :id => 'day_combinations_1' })  %> 
+        <%= ff.collection_select(:building_id, @building_options, :id, :building_name,  {:include_blank => "Building"})%>
+		<%= ff.collection_select(:time_slot_id, @time_slot_options, :id, :time_slot,  {:include_blank => "Time Slot"},{class: "time_slots_select", :id => 'time_slots_1'}) %>
+		<%= ff.hidden_field :semester_id, value: session[:semester_id] %> 
+	<% end %>
+	<br><br>
+
+
+	<p><%= f.label "Preference #2" %></p>
+	<%= f.fields_for :preference2 do |ff| %>
+		<%= ff.collection_select(:day_combination_id, @day_options, :id, :day_combination,{:include_blank => "Day Combination"},{class: "day_combinations_select", :id => 'day_combinations_2'}) %> 
+        <%= ff.collection_select(:building_id, @building_options, :id, :building_name, {:include_blank => "Building"})%>
+		<%= ff.collection_select(:time_slot_id, @time_slot_options, :id, :time_slot,  {:include_blank => "Time Slot"},{class: "time_slots_select", :id => 'time_slots_2'}) %>
+		<%= ff.hidden_field :semester_id, value: session[:semester_id] %> 
+	<% end %>
+	<br><br>
+
+	<p><%= f.label "Preference #3" %></p>
+	<%= f.fields_for :preference3 do |ff| %>
+		<%= ff.collection_select(:day_combination_id, @day_options, :id, :day_combination,{:include_blank => "Day Combination"},{:id => 'day_combinations_3', class: "day_combinations_select"}) %> 
+        <%= ff.collection_select(:building_id, @building_options, :id, :building_name, {:include_blank => "Building"})%>
+		<%= ff.collection_select(:time_slot_id, @time_slot_options, :id, :time_slot, {:include_blank => "Time Slot"},{:id => 'time_slots_3',class: "time_slots_select"}) %><br><br>
+		<p>Edit the note if there are specific reasons for choosing a preference. </p>
+		<%= ff.text_area :note,  class: "form-control input-lg", id: "inputlg", :value => 'None! I just seem to like it.' %>
+		<%= ff.hidden_field :semester_id, value: session[:semester_id] %> 
+	<% end %>
+	
+	<br><br><br>
+	<%= f.hidden_field :semester_id, value: session[:semester_id] %> 
+
+<%= f.submit "Submit",class: "btn btn-block btn-primary btn-lg",data: { confirm: 'Your Preference will be submitted' }  %>
+
+<br><br>
+
+<%end%>
+</div>
+
+<%# <%= f.hidden_field(:faculty_course_id) %> 
+<%# Use this in line 18 insteaf of collection select when sending mails to faculties. %>
+<%# Send URL as .../faculty_preferences/new/?faculty_course_id=x %>
+<%# Where x is the assigned faculty course id %>
+
+</html>

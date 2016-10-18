@@ -1,0 +1,39 @@
+I"+(function() {
+  $(function() {
+    $(document).on('change', '.day_combinations_select', function(evt) {
+      var i, j, ref, time_slot_select_id;
+      for (i = j = 1, ref = $(".day_combinations_select").length; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+        if ($(".day_combinations_select")[i - 1].id === this.id) {
+          time_slot_select_id = "#" + $(".time_slots_select")[i - 1].id;
+        }
+      }
+      return $.ajax('/faculty_preferences/update_time_slots', {
+        type: 'GET',
+        dataType: 'json',
+        data: {
+          day_combination_id: $("#" + this.id + " option:selected").val()
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          return console.log("AJAX Error: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+          var ref1, time_slot, time_slot_id;
+          $(time_slot_select_id).empty();
+          i = 0;
+          ref1 = data.data;
+          for (time_slot_id in ref1) {
+            time_slot = ref1[time_slot_id];
+            $(time_slot_select_id).append($("<option/>", {
+              value: time_slot_id,
+              text: time_slot
+            }));
+          }
+          return i++;
+        }
+      });
+    });
+    return $(".day_combinations_select").trigger('change');
+  });
+
+}).call(this);
+:ET

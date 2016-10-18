@@ -1,0 +1,15 @@
+I"U(function() {
+  $(function() {
+    return $(document).on('change', "#faculty_id", function(evt) {
+      return $.ajax('course_assignments/update_faculty_details', {
+        type: 'GET',
+        dataType: 'script',
+        data: {
+          faculty_id: $("#faculty_id option:selected").val()
+        }
+      });
+    });
+  });
+
+}).call(this);
+:ET

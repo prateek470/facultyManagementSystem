@@ -1,0 +1,23 @@
+
+<div class="login">
+  <div class="container", style = "height: 100%">
+    <div class="form">
+    	<div class = "intro-message"><h1 style="color:white;font-size: 4em">Course Assignment System</h1>
+    		<br></br>
+		<p>
+			<%= form_for(:session, url: login_path) do |f| %>
+			<p style="text-align: center;">
+		         <%= f.email_field :email, :placeholder => "Email" %>
+		    </p>
+		    <p style="text-align: center;">
+			    <%= f.password_field :password, :placeholder => "Password" %>
+			</p>
+			<p style="text-align: center;">
+			    <%= f.submit "Login", class: "btn-submit", id: "login_btn" %>
+			</p>
+	         <% end %>
+		</p>
+		</div>
+    </div>
+   </div>
+</div> 

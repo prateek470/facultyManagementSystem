@@ -1,0 +1,91 @@
+
+
+
+<div style="text-align:center">
+    <div style="display: inline-block;">
+        <h1>Assigned Courses</h1>  
+        <table>
+            <tr>
+                <td><%= link_to "Assign Faculty To Courses", faculty_courses_path, class: "btn btn-default btn-lg" %></td>
+                <td> <%= link_to "Schedule Course", course_assignments_path, class: "btn btn-default btn-lg" %></td>
+                <td> <%= link_to "Preference Summary", pref_summary_index_path, class: "btn btn-default btn-lg" %></td>
+            </tr>
+        </table>
+         
+        
+    </div>
+    
+</div>
+
+<div id='calendar'>
+    
+   
+</div>
+
+
+ <div id="dialog" title="Update Course" style="display:none">
+   <!--  <form>
+        <fieldset>
+            <label for="Id">Title</label>
+            <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" readonly="readonly">
+            <label for="Id">Start Time</label>
+            <input type="text" name="start" id="start" class="text-ui-widget-content ui-corner-all">
+            <label for="Id">End Time</label>
+            <input type="text" name="end" id="end" class="text-ui-widget-content ui-corner-all"> 
+        </fieldset>
+    </form>
+    
+    -->
+    
+<%= form_for :class , method: :get, url:editevent_path  do |f| %>
+       <%= f.hidden_field :name, :id=>"name" %>
+      <p><%= f.label "Title" %>
+      <%= text_field_tag(:title) %>
+      </p>
+      <p>
+          <%= f.label "Time" %>
+          	    <%= f.select :time_slot_id , options_for_select(@timeslot.collect { |timeslot| [DayCombination.where("id=?",timeslot.day_combination_id).select("day_combination").take.day_combination.to_s + " " + timeslot.time_slot , timeslot.id] },		    
+				    	session[:time_slot_id] ), {prompt: "Select Time", hide_label: :true }, 
+				    	{ id: 'sessionId' , class: "btn btn-default dropdown-toggle"} %>
+      </p>
+      
+    
+       
+       <p>
+           <%= f.label "Building" %>
+           <%= f.select :building_id, options_for_select(@building.collect { |building|
+        [building.building_name, building.id] }, 0), {prompt: "Select Building"}, { id: 'building_select' } %>
+       </p>
+       <p>
+       <%= f.label "Room" %> 
+      <%= f.select :room_id, options_for_select(@rooms.collect { |room|
+        [room.room_name, room.id] }, 0), {prompt: "Select Room"}, { id: 'room_select' } %>
+      
+      </p>
+      </p>
+         
+      </p>
+      <table>
+          
+          
+     <tr>
+         
+     <td>
+          <%= f.submit "Submit" %>
+     </td>
+     
+      
+ 
+ <% end %>
+ 
+ <%= form_for :class , method: :get, url:deleteevent_path do |f| %>
+     <%= f.hidden_field :event_id, :id=>"event_id" %>
+     <td>
+         <%= f.submit "Delete" %>
+     </td>
+     
+          </tr>
+      </table>
+ 
+ <%end %> 
+    </div>
